@@ -249,6 +249,7 @@
             this.Controls.Add(this.lblNumber);
             this.Name = "orders_edit";
             this.Text = "orders_edit";
+            this.Load += new System.EventHandler(this.orders_edit_Load);
             ((System.ComponentModel.ISupportInitialize)(this.numCount)).EndInit();
             this.ResumeLayout(false);
             this.PerformLayout();

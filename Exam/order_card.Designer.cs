@@ -34,6 +34,7 @@
             this.lblDateOrder = new System.Windows.Forms.Label();
             this.lblDateArrived = new System.Windows.Forms.Label();
             this.btnDeleteOrder = new System.Windows.Forms.Button();
+            this.flowLayoutPanel1 = new System.Windows.Forms.FlowLayoutPanel();
             this.SuspendLayout();
             // 
             // lblArticul
@@ -79,7 +80,7 @@
             // lblDateArrived
             // 
             this.lblDateArrived.AutoSize = true;
-            this.lblDateArrived.Location = new System.Drawing.Point(591, 68);
+            this.lblDateArrived.Location = new System.Drawing.Point(552, 55);
             this.lblDateArrived.Name = "lblDateArrived";
             this.lblDateArrived.Size = new System.Drawing.Size(44, 16);
             this.lblDateArrived.TabIndex = 4;
@@ -96,18 +97,28 @@
             this.btnDeleteOrder.UseVisualStyleBackColor = true;
             this.btnDeleteOrder.Click += new System.EventHandler(this.btnDeleteOrder_Click);
             // 
+            // flowLayoutPanel1
+            // 
+            this.flowLayoutPanel1.BorderStyle = System.Windows.Forms.BorderStyle.Fixed3D;
+            this.flowLayoutPanel1.Location = new System.Drawing.Point(473, 16);
+            this.flowLayoutPanel1.Name = "flowLayoutPanel1";
+            this.flowLayoutPanel1.Size = new System.Drawing.Size(257, 105);
+            this.flowLayoutPanel1.TabIndex = 6;
+            // 
             // order_card
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(8F, 16F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
+            this.BorderStyle = System.Windows.Forms.BorderStyle.Fixed3D;
             this.Controls.Add(this.btnDeleteOrder);
             this.Controls.Add(this.lblDateArrived);
             this.Controls.Add(this.lblDateOrder);
             this.Controls.Add(this.lblPVZ);
             this.Controls.Add(this.lblStatus);
             this.Controls.Add(this.lblArticul);
+            this.Controls.Add(this.flowLayoutPanel1);
             this.Name = "order_card";
-            this.Size = new System.Drawing.Size(712, 147);
+            this.Size = new System.Drawing.Size(767, 143);
             this.Load += new System.EventHandler(this.order_card_Load);
             this.Click += new System.EventHandler(this.lblArticul_Click);
             this.ResumeLayout(false);
@@ -123,5 +134,6 @@
         private System.Windows.Forms.Label lblDateOrder;
         private System.Windows.Forms.Label lblDateArrived;
         private System.Windows.Forms.Button btnDeleteOrder;
+        private System.Windows.Forms.FlowLayoutPanel flowLayoutPanel1;
     }
 }

@@ -30,6 +30,7 @@ namespace Exam
 
             if (!_currentNumber.HasValue)
             {
+                // РЕЖИМ ДОБАВЛЕНИЯ
                 txtNumber.ReadOnly = true;
                 var ta = new MainDataSetTableAdapters.ordersTableAdapter();
                 var table = ta.GetData();
@@ -38,11 +39,20 @@ namespace Exam
                     : 0;
                 txtNumber.Text = (maxNumber + 1).ToString();
 
+                // Сбрасываем ComboBox'ы на первый элемент
+                cmbArticul.SelectedIndex = -1;
+                cmbStatus.SelectedIndex = -1;
+                cmbPVZ.SelectedIndex = -1;
+                cmbLogin.SelectedIndex = -1;
+                numCount.Value = 1;
+                txtCode.Text = "";
+
                 dtpDateOrder.Value = DateTime.Now;
                 dtpDateArrived.Value = DateTime.Now.AddDays(30);
             }
             else
             {
+                // РЕЖИМ РЕДАКТИРОВАНИЯ
                 txtNumber.ReadOnly = true;
                 LoadOrderData();
             }
@@ -50,25 +60,21 @@ namespace Exam
 
         private void LoadComboBoxes()
         {
-            // Артикул товара
             var goodsTA = new MainDataSetTableAdapters.goodsTableAdapter();
             cmbArticul.DataSource = goodsTA.GetData();
             cmbArticul.DisplayMember = "Articul";
             cmbArticul.ValueMember = "Articul";
 
-            // Статус заказа
             var statusTA = new MainDataSetTableAdapters.statusTableAdapter();
             cmbStatus.DataSource = statusTA.GetData();
             cmbStatus.DisplayMember = "name";
             cmbStatus.ValueMember = "id";
 
-            // Адрес ПВЗ
             var pvzTA = new MainDataSetTableAdapters.PVZTableAdapter();
             cmbPVZ.DataSource = pvzTA.GetData();
             cmbPVZ.DisplayMember = "address";
             cmbPVZ.ValueMember = "id";
 
-            // Логин пользователя (из таблицы users)
             var usersTA = new MainDataSetTableAdapters.usersTableAdapter();
             cmbLogin.DataSource = usersTA.GetData();
             cmbLogin.DisplayMember = "Login";
@@ -85,23 +91,45 @@ namespace Exam
             {
                 DataRow row = rows[0];
                 txtNumber.Text = row["Number"].ToString();
-                cmbArticul.SelectedValue = row["Articul"];
+
+                cmbArticul.SelectedValue = row["Articul"].ToString();
                 numCount.Value = Convert.ToDecimal(row["Count"]);
                 cmbStatus.SelectedValue = row["Status"];
                 cmbPVZ.SelectedValue = row["Address_PVZ"];
-                cmbLogin.SelectedValue = row["Login"];
+                cmbLogin.SelectedValue = row["Login"].ToString();
                 txtCode.Text = row["Code"].ToString();
 
-                if (DateTime.TryParse(row["Date_order"].ToString(), out DateTime d1))
+                string dateOrder = row["Date_order"].ToString();
+                string dateArrived = row["Date_arrived"].ToString();
+
+                if (TryParseDate(dateOrder, out DateTime d1))
                     dtpDateOrder.Value = d1;
-                if (DateTime.TryParse(row["Date_arrived"].ToString(), out DateTime d2))
+                else
+                    dtpDateOrder.Value = DateTime.Now;
+
+                if (TryParseDate(dateArrived, out DateTime d2))
                     dtpDateArrived.Value = d2;
+                else
+                    dtpDateArrived.Value = DateTime.Now.AddDays(30);
             }
+        }
+
+        private bool TryParseDate(string dateStr, out DateTime result)
+        {
+            string[] formats = {
+                "M/d/yy", "MM/dd/yy", "d/M/yy", "dd/MM/yy",
+                "M/d/yyyy", "MM/dd/yyyy", "d/M/yyyy", "dd/MM/yyyy",
+                "yyyy-MM-dd", "dd.MM.yyyy", "d.MM.yyyy"
+            };
+
+            return DateTime.TryParseExact(dateStr, formats,
+                System.Globalization.CultureInfo.InvariantCulture,
+                System.Globalization.DateTimeStyles.None, out result) ||
+                DateTime.TryParse(dateStr, out result);
         }
 
         private void btnSave_Click(object sender, EventArgs e)
         {
-            // Валидация кода (должен быть числом)
             if (!int.TryParse(txtCode.Text, out int code) || code < 0)
             {
                 MessageBox.Show("Код получения должен быть положительным числом!", "Ошибка ввода",
@@ -109,8 +137,8 @@ namespace Exam
                 return;
             }
 
-            if (cmbArticul.SelectedValue == null || cmbStatus.SelectedValue == null ||
-                cmbPVZ.SelectedValue == null || cmbLogin.SelectedValue == null)
+            if (cmbArticul.SelectedIndex < 0 || cmbStatus.SelectedIndex < 0 ||
+                cmbPVZ.SelectedIndex < 0 || cmbLogin.SelectedIndex < 0)
             {
                 MessageBox.Show("Заполните все выпадающие списки!", "Ошибка ввода",
                     MessageBoxButtons.OK, MessageBoxIcon.Error);
@@ -120,31 +148,36 @@ namespace Exam
             var ta = new MainDataSetTableAdapters.ordersTableAdapter();
             var table = ta.GetData();
 
+            string articul = cmbArticul.SelectedValue.ToString();
+            int statusId = Convert.ToInt32(cmbStatus.SelectedValue);
+            int pvzId = Convert.ToInt32(cmbPVZ.SelectedValue);
+            string login = cmbLogin.SelectedValue.ToString();
+
             if (!_currentNumber.HasValue)
             {
                 DataRow newRow = table.NewRow();
                 newRow["Number"] = Convert.ToInt32(txtNumber.Text);
-                newRow["Articul"] = cmbArticul.SelectedValue;
+                newRow["Articul"] = articul;
                 newRow["Count"] = (int)numCount.Value;
                 newRow["Date_order"] = dtpDateOrder.Value.ToString("M/d/yy");
                 newRow["Date_arrived"] = dtpDateArrived.Value.ToString("M/d/yy");
-                newRow["Address_PVZ"] = cmbPVZ.SelectedValue;
-                newRow["Login"] = cmbLogin.SelectedValue;
+                newRow["Address_PVZ"] = pvzId;
+                newRow["Login"] = login;
                 newRow["Code"] = code;
-                newRow["Status"] = cmbStatus.SelectedValue;
+                newRow["Status"] = statusId;
                 table.Rows.Add(newRow);
             }
             else
             {
                 DataRow row = table.Select($"Number = {_currentNumber}")[0];
-                row["Articul"] = cmbArticul.SelectedValue;
+                row["Articul"] = articul;
                 row["Count"] = (int)numCount.Value;
                 row["Date_order"] = dtpDateOrder.Value.ToString("M/d/yy");
                 row["Date_arrived"] = dtpDateArrived.Value.ToString("M/d/yy");
-                row["Address_PVZ"] = cmbPVZ.SelectedValue;
-                row["Login"] = cmbLogin.SelectedValue;
+                row["Address_PVZ"] = pvzId;
+                row["Login"] = login;
                 row["Code"] = code;
-                row["Status"] = cmbStatus.SelectedValue;
+                row["Status"] = statusId;
             }
 
             ta.Update(table);

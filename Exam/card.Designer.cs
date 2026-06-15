@@ -40,6 +40,7 @@
             this.count_label = new System.Windows.Forms.Label();
             this.sale_label = new System.Windows.Forms.Label();
             this.btnDeleteCard = new System.Windows.Forms.Button();
+            this.final_price_label = new System.Windows.Forms.Label();
             ((System.ComponentModel.ISupportInitialize)(this.Main_Picture)).BeginInit();
             this.SuspendLayout();
             // 
@@ -154,11 +155,21 @@
             this.btnDeleteCard.UseVisualStyleBackColor = true;
             this.btnDeleteCard.Click += new System.EventHandler(this.btnDeleteCard_Click);
             // 
+            // final_price_label
+            // 
+            this.final_price_label.AutoSize = true;
+            this.final_price_label.Location = new System.Drawing.Point(454, 258);
+            this.final_price_label.Name = "final_price_label";
+            this.final_price_label.Size = new System.Drawing.Size(40, 16);
+            this.final_price_label.TabIndex = 11;
+            this.final_price_label.Text = "Цена";
+            // 
             // card
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(8F, 16F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle;
+            this.Controls.Add(this.final_price_label);
             this.Controls.Add(this.btnDeleteCard);
             this.Controls.Add(this.sale_label);
             this.Controls.Add(this.count_label);
@@ -194,5 +205,6 @@
         private System.Windows.Forms.Label count_label;
         private System.Windows.Forms.Label sale_label;
         private System.Windows.Forms.Button btnDeleteCard;
+        private System.Windows.Forms.Label final_price_label;
     }
 }

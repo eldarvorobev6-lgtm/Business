@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.ComponentModel;
 using System.Data;
 using System.Drawing;
+using System.IO;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
@@ -15,55 +16,106 @@ namespace Exam
         public DataRow CardDDD { get; set; }
         public card(DataRow DR)
         {
-            InitializeComponent(); 
+            InitializeComponent();
             CardDDD = DR;
         }
 
         private void card_Load(object sender, EventArgs e)
         {
-            name_label.Text = "Наименование:" + CardDDD["Name"].ToString();
-            measure_label.Text = "Единица измерения:" + CardDDD["Measurement"].ToString();
-            describe_label.Text = "Описание:" + CardDDD["Description"].ToString();
-            count_label.Text = "Количество:" + CardDDD["Count"].ToString();
-            price_label.Text = "Цена:" + CardDDD["Price"].ToString();
-            sale_label.Text = "Скидка:" + CardDDD["Discount"].ToString();
+            name_label.Text = "Наименование: " + CardDDD["Name"].ToString();
+            measure_label.Text = "Единица измерения: " + CardDDD["Measurement"].ToString();
+            describe_label.Text = "Описание: " + CardDDD["Description"].ToString();
 
-            MainDataSetTableAdapters.categoryTableAdapter category_dr = new MainDataSetTableAdapters.categoryTableAdapter();
-            var category_table = category_dr.GetData();
-            foreach (DataRow row in category_table)
+            int count = Convert.ToInt32(CardDDD["Count"]);
+            count_label.Text = "Количество: " + count.ToString();
+
+            decimal price = Convert.ToDecimal(CardDDD["Price"]);
+            int discount = Convert.ToInt32(CardDDD["Discount"]);
+            sale_label.Text = "Скидка: " + discount + "%";
+
+            // === ЛОГИКА ЦЕН СО СКИДКОЙ ===
+            this.BackColor = Color.White;
+            price_label.ForeColor = Color.Black;
+            price_label.Font = new Font(price_label.Font, price_label.Font.Style & ~FontStyle.Strikeout);
+            if (final_price_label != null) final_price_label.Text = "";
+
+            if (discount > 0)
             {
-                if (row[0].ToString() == CardDDD["Category"].ToString())
+                price_label.Text = "Цена: " + price.ToString("F2") + " руб.";
+                price_label.ForeColor = Color.Red;
+                price_label.Font = new Font(price_label.Font, FontStyle.Strikeout);
+
+                decimal finalPrice = price * (100 - discount) / 100;
+                if (final_price_label != null)
                 {
-                    category_label.Text = "Категория:" + row[1].ToString();
+                    final_price_label.Text = "Итого: " + finalPrice.ToString("F2") + " руб.";
+                    final_price_label.ForeColor = Color.Black;
+                    final_price_label.Font = new Font(final_price_label.Font, FontStyle.Bold);
                 }
             }
-
-            MainDataSetTableAdapters.manufacturerTableAdapter manufact_dr = new MainDataSetTableAdapters.manufacturerTableAdapter();
-            var manufacturer_table = manufact_dr.GetData();
-            foreach (DataRow row in manufacturer_table)
+            else
             {
-                if (row[0].ToString() == CardDDD["Manufacturer"].ToString())
-                {
-                    manuf_label.Text = "Производитель:" + row[1].ToString();
-                }
+                price_label.Text = "Цена: " + price.ToString("F2") + " руб.";
             }
 
-            MainDataSetTableAdapters.supplierTableAdapter supplier_dr = new MainDataSetTableAdapters.supplierTableAdapter();
-            var supplier_table = supplier_dr.GetData();
-            foreach (DataRow row in supplier_table)
-            {
-                if (row[0].ToString() == CardDDD["Supplier"].ToString())
-                {
-                    supplier_label.Text = "Поставщик:" + row[1].ToString();
-                }
-            }
-
+            // === ПОДСТАНОВКА КАТЕГОРИИ ===
             try
             {
-                string imagePath = System.IO.Path.Combine(Application.StartupPath, "images", CardDDD["Photo"].ToString());
-                if (System.IO.File.Exists(imagePath))
+                MainDataSetTableAdapters.categoryTableAdapter category_dr =
+                    new MainDataSetTableAdapters.categoryTableAdapter();
+                var category_table = category_dr.GetData();
+                foreach (DataRow row in category_table)
                 {
-                    using (System.IO.FileStream st = new System.IO.FileStream(imagePath, System.IO.FileMode.Open, System.IO.FileAccess.Read))
+                    if (row[0].ToString() == CardDDD["Category"].ToString())
+                    {
+                        category_label.Text = "Категория: " + row[1].ToString();
+                        break;
+                    }
+                }
+            }
+            catch { category_label.Text = "Категория: ошибка загрузки"; }
+
+            // === ПОДСТАНОВКА ПРОИЗВОДИТЕЛЯ ===
+            try
+            {
+                MainDataSetTableAdapters.manufacturerTableAdapter manufact_dr =
+                    new MainDataSetTableAdapters.manufacturerTableAdapter();
+                var manufacturer_table = manufact_dr.GetData();
+                foreach (DataRow row in manufacturer_table)
+                {
+                    if (row[0].ToString() == CardDDD["Manufacturer"].ToString())
+                    {
+                        manuf_label.Text = "Производитель: " + row[1].ToString();
+                        break;
+                    }
+                }
+            }
+            catch { manuf_label.Text = "Производитель: ошибка загрузки"; }
+
+            // === ПОДСТАНОВКА ПОСТАВЩИКА ===
+            try
+            {
+                MainDataSetTableAdapters.supplierTableAdapter supplier_dr =
+                    new MainDataSetTableAdapters.supplierTableAdapter();
+                var supplier_table = supplier_dr.GetData();
+                foreach (DataRow row in supplier_table)
+                {
+                    if (row[0].ToString() == CardDDD["Supplier"].ToString())
+                    {
+                        supplier_label.Text = "Поставщик: " + row[1].ToString();
+                        break;
+                    }
+                }
+            }
+            catch { supplier_label.Text = "Поставщик: ошибка загрузки"; }
+
+            // === ЗАГРУЗКА ИЗОБРАЖЕНИЯ ===
+            try
+            {
+                string imagePath = Path.Combine(Application.StartupPath, "images", CardDDD["Photo"].ToString());
+                if (File.Exists(imagePath))
+                {
+                    using (FileStream st = new FileStream(imagePath, FileMode.Open, FileAccess.Read))
                     {
                         Main_Picture.Image = Image.FromStream(st);
                     }
@@ -78,14 +130,21 @@ namespace Exam
                 Main_Picture.Image = Properties.Resources.picture;
             }
 
-            if (int.Parse(CardDDD["Discount"].ToString()) >= 17)
+            // === ПОДСВЕТКА КАРТОЧКИ ===
+            if (count == 0)
+            {
+                this.BackColor = Color.LightBlue;
+            }
+            else if (discount >= 17)
             {
                 this.BackColor = ColorTranslator.FromHtml("#FFDEAD");
             }
-        }
-        private void label2_Click(object sender, EventArgs e)
-        {
 
+            // === СКРЫВАЕМ КНОПКУ УДАЛЕНИЯ ДЛЯ ГОСТЯ И КЛИЕНТА ===
+            if (CurrentUser.RoleID >= 3)
+            {
+                if (btnDeleteCard != null) btnDeleteCard.Visible = false;
+            }
         }
 
         private void btnDeleteCard_Click(object sender, EventArgs e)
@@ -96,14 +155,13 @@ namespace Exam
             }
         }
 
-        // DELETE FROM orders WHERE Number = @Number Клик по самой карточке открывает редактирование (только для Админа, RoleID = 1)
         private void card_Click(object sender, EventArgs e)
         {
             if (CurrentUser.RoleID == 1 && this.ParentForm is goods_view mainForm)
             {
                 goods_edit editForm = new goods_edit(CardDDD["Articul"].ToString());
                 editForm.ShowDialog();
-                mainForm.LoadGoods(); // Обновляем список после редактирования
+                mainForm.LoadGoods();
             }
         }
 

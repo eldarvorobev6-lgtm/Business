@@ -164,13 +164,6 @@ namespace Exam
             }
         }
 
-        // Кнопка "Добавить товар"
-        private void btnAdd_Click(object sender, EventArgs e)
-        {
-            goods_edit addForm = new goods_edit();
-            addForm.ShowDialog(); // Модальное окно
-            LoadGoods(); // Обновляем список после закрытия окна
-        }
 
         // Метод удаления товара (вызывается из карточки)
         public void DeleteGoods(string articul)
@@ -229,6 +222,13 @@ namespace Exam
         {
             orders_view ov = new orders_view();
             ov.ShowDialog();
+        }
+
+        private void btnAdd_Click(object sender, EventArgs e)
+        {
+            goods_edit addForm = new goods_edit();
+            addForm.ShowDialog(); // Модальное окно
+            LoadGoods(); // Обновляем список после закрытия окна
         }
     }
 }

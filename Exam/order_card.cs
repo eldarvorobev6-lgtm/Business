@@ -43,8 +43,19 @@ namespace Exam
         private void order_card_Load(object sender, EventArgs e)
         {
             lblArticul.Text = "Артикул заказа: " + OrderData["Articul"].ToString();
-            lblDateOrder.Text = "Дата заказа: " + OrderData["Date_order"].ToString();
-            lblDateArrived.Text = "Дата доставки: " + OrderData["Date_arrived"].ToString();
+
+            string dateOrderStr = OrderData["Date_order"].ToString();
+            string dateArrivedStr = OrderData["Date_arrived"].ToString();
+
+            if (DateTime.TryParse(dateOrderStr, out DateTime dateOrder))
+                lblDateOrder.Text = "Дата заказа: " + dateOrder.ToString("dd.MM.yyyy");
+            else
+                lblDateOrder.Text = "Дата заказа: " + dateOrderStr;
+
+            if (DateTime.TryParse(dateArrivedStr, out DateTime dateArrived))
+                lblDateArrived.Text = "Дата доставки: " + dateArrived.ToString("dd.MM.yyyy");
+            else
+                lblDateArrived.Text = "Дата доставки: " + dateArrivedStr;
 
             try
             {

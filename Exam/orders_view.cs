@@ -12,6 +12,18 @@ namespace Exam
             InitializeComponent();
         }
 
+        private void orders_view_Load_1(object sender, EventArgs e)
+        {
+            this.Text = "Список заказов";
+            lblUserInfo.Text = $"{CurrentUser.FIO}\n({CurrentUser.RoleName})";
+
+            if (CurrentUser.RoleID != 1)
+            {
+                btnAddOrder.Visible = false;
+            }
+
+            LoadOrders();
+        }
 
         public void LoadOrders()
         {
@@ -27,10 +39,6 @@ namespace Exam
             }
         }
 
-        private void btnAddOrder_Click(object sender, EventArgs e)
-        {
-
-        }
 
         public void EditOrder(int number)
         {
@@ -72,19 +80,19 @@ namespace Exam
         private void btnBack_Click_1(object sender, EventArgs e)
         {
             this.Close();
-
         }
 
-        private void orders_view_Load_1(object sender, EventArgs e)
+        private void btnAddOrder_Click(object sender, EventArgs e)
         {
-            this.Text = "Список заказов";
-            lblUserInfo.Text = $"{CurrentUser.FIO}\n({CurrentUser.RoleName})";
-
-            if (CurrentUser.RoleID != 1)
+            if (Application.OpenForms.OfType<orders_edit>().Any())
             {
-                btnAddOrder.Visible = false;
+                MessageBox.Show("Окно редактирования заказа уже открыто!", "Предупреждение",
+                    MessageBoxButtons.OK, MessageBoxIcon.Warning);
+                return;
             }
 
+            orders_edit editForm = new orders_edit();
+            editForm.ShowDialog();
             LoadOrders();
         }
     }

@@ -38,23 +38,25 @@
             // 
             this.ordersPanel.AutoScroll = true;
             this.ordersPanel.FlowDirection = System.Windows.Forms.FlowDirection.TopDown;
-            this.ordersPanel.Location = new System.Drawing.Point(22, 82);
+            this.ordersPanel.Location = new System.Drawing.Point(12, 12);
             this.ordersPanel.Name = "ordersPanel";
-            this.ordersPanel.Size = new System.Drawing.Size(686, 328);
+            this.ordersPanel.Size = new System.Drawing.Size(948, 404);
             this.ordersPanel.TabIndex = 0;
+            this.ordersPanel.WrapContents = false;
             // 
             // btnAddOrder
             // 
-            this.btnAddOrder.Location = new System.Drawing.Point(757, 126);
+            this.btnAddOrder.Location = new System.Drawing.Point(988, 146);
             this.btnAddOrder.Name = "btnAddOrder";
             this.btnAddOrder.Size = new System.Drawing.Size(104, 43);
             this.btnAddOrder.TabIndex = 1;
             this.btnAddOrder.Text = "Добавить заказ";
             this.btnAddOrder.UseVisualStyleBackColor = true;
+            this.btnAddOrder.Click += new System.EventHandler(this.btnAddOrder_Click);
             // 
             // btnBack
             // 
-            this.btnBack.Location = new System.Drawing.Point(757, 207);
+            this.btnBack.Location = new System.Drawing.Point(988, 227);
             this.btnBack.Name = "btnBack";
             this.btnBack.Size = new System.Drawing.Size(104, 43);
             this.btnBack.TabIndex = 2;
@@ -65,7 +67,7 @@
             // lblUserInfo
             // 
             this.lblUserInfo.AutoSize = true;
-            this.lblUserInfo.Location = new System.Drawing.Point(785, 74);
+            this.lblUserInfo.Location = new System.Drawing.Point(1016, 94);
             this.lblUserInfo.Name = "lblUserInfo";
             this.lblUserInfo.Size = new System.Drawing.Size(44, 16);
             this.lblUserInfo.TabIndex = 3;
@@ -75,7 +77,7 @@
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(8F, 16F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
-            this.ClientSize = new System.Drawing.Size(893, 450);
+            this.ClientSize = new System.Drawing.Size(1141, 450);
             this.Controls.Add(this.lblUserInfo);
             this.Controls.Add(this.btnBack);
             this.Controls.Add(this.btnAddOrder);
