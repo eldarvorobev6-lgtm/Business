@@ -30,12 +30,11 @@ namespace Exam
 
             if (!_currentNumber.HasValue)
             {
-                // РЕЖИМ ДОБАВЛЕНИЯ
-                // Скрываем номер заказа и его label
-                txtNumber.Visible = false;
+                // Режим добавления
+                 txtNumber.Visible = false;
                 if (lblNumber != null) lblNumber.Visible = false;
 
-                // Сбрасываем ComboBox'ы
+                // Сбрасываем ComboBox
                 cmbArticul.SelectedIndex = -1;
                 cmbStatus.SelectedIndex = -1;
                 cmbPVZ.SelectedIndex = -1;
@@ -48,8 +47,7 @@ namespace Exam
             }
             else
             {
-                // РЕЖИМ РЕДАКТИРОВАНИЯ
-                // Показываем номер заказа, он только для чтения
+                // Режим редактирования
                 txtNumber.Visible = true;
                 if (lblNumber != null) lblNumber.Visible = true;
                 txtNumber.ReadOnly = true;
@@ -154,7 +152,6 @@ namespace Exam
 
             if (!_currentNumber.HasValue)
             {
-                // При добавлении — номер вычисляется автоматически как max + 1
                 int maxNumber = table.Rows.Count > 0
                     ? table.AsEnumerable().Max(r => Convert.ToInt32(r["Number"]))
                     : 0;

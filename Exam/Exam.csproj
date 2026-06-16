@@ -186,6 +186,21 @@
   </ItemGroup>
   <ItemGroup>
     <Content Include="icon.ico" />
+    <Content Include="images\1.JPG" />
+    <Content Include="images\10.JPG" />
+    <Content Include="images\2.JPG" />
+    <Content Include="images\3.JPG" />
+    <Content Include="images\4.JPG" />
+    <Content Include="images\5.JPG" />
+    <Content Include="images\6.JPG" />
+    <Content Include="images\7.JPG" />
+    <Content Include="images\8.JPG" />
+    <Content Include="images\9.JPG" />
+    <Content Include="images\icon.ico" />
+    <Content Include="images\icon.jpg" />
+    <Content Include="images\icon.png" />
+    <Content Include="images\picture.png" />
+    <Content Include="images\выаыавы.png" />
   </ItemGroup>
   <ItemGroup>
     <BootstrapperPackage Include=".NETFramework,Version=v4.7.2">

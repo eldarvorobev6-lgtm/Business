@@ -8,6 +8,9 @@ namespace Exam
 {
     public partial class goods_view : Form
     {
+        private int _currentSupplierId = 0;
+        private bool _isFilterLoading = false;
+
         public goods_view()
         {
             InitializeComponent();
@@ -47,6 +50,8 @@ namespace Exam
 
         private void LoadSuppliersFilter()
         {
+            _isFilterLoading = true;
+
             MainDataSetTableAdapters.supplierTableAdapter supTA = new MainDataSetTableAdapters.supplierTableAdapter();
             var supTable = supTA.GetData();
 
@@ -65,6 +70,9 @@ namespace Exam
             filterComboBox.DisplayMember = "name";
             filterComboBox.ValueMember = "id";
             filterComboBox.SelectedIndex = 0;
+            _currentSupplierId = 0;
+
+            _isFilterLoading = false;
         }
 
         private void LoadSortOptions()
@@ -86,27 +94,24 @@ namespace Exam
             var table = ta.GetData();
             DataView dv = table.DefaultView;
 
-            string filter = "";
+            List<string> filters = new List<string>();
 
             if (!string.IsNullOrWhiteSpace(searchTextBox.Text))
             {
                 string search = searchTextBox.Text.Replace("'", "''");
-                filter = $"(Name LIKE '%{search}%') OR " +
-                         $"(Description LIKE '%{search}%') OR " +
-                         $"(Measurement LIKE '%{search}%') OR " +
-                         $"(Articul LIKE '%{search}%')";
+                filters.Add(
+                    $"((Name LIKE '%{search}%') OR " +
+                    $"(Description LIKE '%{search}%') OR " +
+                    $"(Measurement LIKE '%{search}%') OR " +
+                    $"(Articul LIKE '%{search}%'))");
             }
 
-            if (filterComboBox.SelectedIndex > 0)
+            if (_currentSupplierId > 0)
             {
-                DataRowView selectedRow = (DataRowView)filterComboBox.SelectedItem;
-                int supplierId = Convert.ToInt32(selectedRow["id"]);
-
-                if (!string.IsNullOrEmpty(filter)) filter += " AND ";
-                filter += $"Supplier = {supplierId}";
+                filters.Add($"Supplier = {_currentSupplierId}");
             }
 
-            dv.RowFilter = filter;
+            dv.RowFilter = string.Join(" AND ", filters);
 
             List<string> sortParts = new List<string>();
 
@@ -129,23 +134,32 @@ namespace Exam
         }
 
         private void searchTextBox_TextChanged(object sender, EventArgs e) => LoadGoods();
-        private void filterComboBox_SelectedIndexChanged(object sender, EventArgs e) => LoadGoods();
-        private void sortPriceComboBox_SelectedIndexChanged(object sender, EventArgs e) => LoadGoods();
-        private void sortCountComboBox_SelectedIndexChanged(object sender, EventArgs e) => LoadGoods();
 
-        private void btnLogout_Click(object sender, EventArgs e)
+        private void filterComboBox_SelectedIndexChanged(object sender, EventArgs e)
         {
-            var result = MessageBox.Show("Вы действительно хотите выйти?", "Подтверждение",
-                MessageBoxButtons.YesNo, MessageBoxIcon.Question);
+            if (_isFilterLoading) return;
 
-            if (result == DialogResult.Yes)
+            if (filterComboBox.SelectedItem != null && filterComboBox.SelectedIndex >= 0)
             {
-                CurrentUser.Logout();
-                this.Close();
+                try
+                {
+                    DataRowView selectedRow = (DataRowView)filterComboBox.SelectedItem;
+                    _currentSupplierId = Convert.ToInt32(selectedRow["id"]);
+                }
+                catch
+                {
+                    _currentSupplierId = 0;
+                }
             }
+            else
+            {
+                _currentSupplierId = 0;
+            }
+            LoadGoods();
         }
 
-
+        private void sortPriceComboBox_SelectedIndexChanged(object sender, EventArgs e) => LoadGoods();
+        private void sortCountComboBox_SelectedIndexChanged(object sender, EventArgs e) => LoadGoods();
 
         private void goods_view_FormClosing(object sender, FormClosingEventArgs e)
         {
@@ -164,8 +178,6 @@ namespace Exam
             }
         }
 
-
-        // Метод удаления товара (вызывается из карточки)
         public void DeleteGoods(string articul)
         {
             var result = MessageBox.Show($"Вы действительно хотите удалить товар с артикулом {articul}?\nЭто действие необратимо!",
@@ -175,7 +187,6 @@ namespace Exam
             {
                 try
                 {
-                    // 1. Проверяем, есть ли товар в заказах
                     var ordTA = new MainDataSetTableAdapters.ordersTableAdapter();
                     var ordersTable = ordTA.GetData();
                     DataRow[] foundInOrders = ordersTable.Select($"Articul = '{articul}'");
@@ -187,7 +198,6 @@ namespace Exam
                         return;
                     }
 
-                    // 2. Получаем имя файла фото, чтобы удалить его с диска
                     var goodsTA = new MainDataSetTableAdapters.goodsTableAdapter();
                     var goodsTable = goodsTA.GetData();
                     DataRow[] goodsRow = goodsTable.Select($"Articul = '{articul}'");
@@ -205,11 +215,10 @@ namespace Exam
                         }
                     }
 
-                    // 3. Удаляем из БД (Убедитесь, что в goodsTableAdapter есть запрос DeleteQuery)
                     goodsTA.DeleteQuery(articul);
 
                     MessageBox.Show("Товар успешно удалён!", "Информация", MessageBoxButtons.OK, MessageBoxIcon.Information);
-                    LoadGoods(); // Обновляем список
+                    LoadGoods();
                 }
                 catch (Exception ex)
                 {
@@ -227,8 +236,8 @@ namespace Exam
         private void btnAdd_Click(object sender, EventArgs e)
         {
             goods_edit addForm = new goods_edit();
-            addForm.ShowDialog(); // Модальное окно
-            LoadGoods(); // Обновляем список после закрытия окна
+            addForm.ShowDialog();
+            LoadGoods();
         }
     }
 }

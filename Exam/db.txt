@@ -1,0 +1,56 @@
+Таблица category:
+id - int (IDENTITY)
+name - nvarchar(50)
+
+Таблица goods:
+Articul - nvarchar(50)
+Name - nvarchar(300)
+Measurement - nvarchar(50)
+Price - float
+Supplier - int
+Manufacturer - int
+Category - int
+Discount - int
+Count - int
+Description - nvarchar(300)
+Photo - nvarchar(50)
+
+Таблица manufacturer:
+id - int (IDENTITY)
+name - nvarchar(50)
+
+Таблица orders:
+Number - int
+Articul - nvarchar(50)
+Count - int
+Date_order - nvarchar(50)
+Date_arrived - nvarchar(50)
+Address_PVZ - int
+Login - nvarchar(50)
+Code - int
+Status - int
+
+Таблица PVZ:
+id - int (IDENTITY)
+address - nvarchar(max)
+
+Таблица Roles:
+id - int (IDENTITY)
+name - nvarchar(50)
+
+Таблица status:
+id - int (IDENTITY)
+name - nvarchar(50)
+Таблица supplier:
+
+id - int (IDENTITY)
+name - nvarchar(50)
+
+Таблица users:
+Role - int
+FIO - nvarchar(50)
+Login - nvarchar(50)
+Password - nvarchar(50)
+
+DELETE FROM goods WHERE Articul = @Articul
+DELETE FROM orders WHERE Number = @Number

@@ -22,6 +22,7 @@ namespace Exam
 
         private void card_Load(object sender, EventArgs e)
         {
+            // Заполняем основные данные товара
             name_label.Text = "Наименование: " + CardDDD["Name"].ToString();
             measure_label.Text = "Единица измерения: " + CardDDD["Measurement"].ToString();
             describe_label.Text = "Описание: " + CardDDD["Description"].ToString();
@@ -33,12 +34,13 @@ namespace Exam
             int discount = Convert.ToInt32(CardDDD["Discount"]);
             sale_label.Text = "Скидка: " + discount + "%";
 
-            // === ЛОГИКА ЦЕН СО СКИДКОЙ ===
+            // Сбрасываем стили перед применением логики цен
             this.BackColor = Color.White;
             price_label.ForeColor = Color.Black;
             price_label.Font = new Font(price_label.Font, price_label.Font.Style & ~FontStyle.Strikeout);
             if (final_price_label != null) final_price_label.Text = "";
 
+            // Если есть скидка 
             if (discount > 0)
             {
                 price_label.Text = "Цена: " + price.ToString("F2") + " руб.";
@@ -55,10 +57,10 @@ namespace Exam
             }
             else
             {
+                // Без скидки - обычная цена
                 price_label.Text = "Цена: " + price.ToString("F2") + " руб.";
             }
 
-            // === ПОДСТАНОВКА КАТЕГОРИИ ===
             try
             {
                 MainDataSetTableAdapters.categoryTableAdapter category_dr =
@@ -75,8 +77,7 @@ namespace Exam
             }
             catch { category_label.Text = "Категория: ошибка загрузки"; }
 
-            // === ПОДСТАНОВКА ПРОИЗВОДИТЕЛЯ ===
-            try
+             try
             {
                 MainDataSetTableAdapters.manufacturerTableAdapter manufact_dr =
                     new MainDataSetTableAdapters.manufacturerTableAdapter();
@@ -92,7 +93,6 @@ namespace Exam
             }
             catch { manuf_label.Text = "Производитель: ошибка загрузки"; }
 
-            // === ПОДСТАНОВКА ПОСТАВЩИКА ===
             try
             {
                 MainDataSetTableAdapters.supplierTableAdapter supplier_dr =
@@ -109,7 +109,6 @@ namespace Exam
             }
             catch { supplier_label.Text = "Поставщик: ошибка загрузки"; }
 
-            // === ЗАГРУЗКА ИЗОБРАЖЕНИЯ ===
             try
             {
                 string imagePath = Path.Combine(Application.StartupPath, "images", CardDDD["Photo"].ToString());
@@ -130,7 +129,6 @@ namespace Exam
                 Main_Picture.Image = Properties.Resources.picture;
             }
 
-            // === ПОДСВЕТКА КАРТОЧКИ ===
             if (count == 0)
             {
                 this.BackColor = Color.LightBlue;
@@ -140,7 +138,6 @@ namespace Exam
                 this.BackColor = ColorTranslator.FromHtml("#FFDEAD");
             }
 
-            // === СКРЫВАЕМ КНОПКУ УДАЛЕНИЯ ДЛЯ ГОСТЯ И КЛИЕНТА ===
             if (CurrentUser.RoleID >= 3)
             {
                 if (btnDeleteCard != null) btnDeleteCard.Visible = false;

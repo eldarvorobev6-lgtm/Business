@@ -15,7 +15,6 @@ namespace Exam
 
         public goods_edit(string articul = null)
         {
-            // Проверка: запрещено открывать более одного окна редактирования
             if (Application.OpenForms.OfType<goods_edit>().Count() > 1)
             {
                 MessageBox.Show("Окно редактирования уже открыто!\nЗакройте его перед открытием нового.",
@@ -35,15 +34,14 @@ namespace Exam
 
             if (string.IsNullOrEmpty(_currentArticul))
             {
-                // Режим ДОБАВЛЕНИЯ: поле артикула доступно для ввода
                 txtArticul.ReadOnly = false;
                 txtArticul.Clear();
                 txtArticul.Focus();
-                picProduct.Image = Properties.Resources.picture; // Заглушка
+                picProduct.Image = Properties.Resources.picture; 
             }
             else
             {
-                // Режим РЕДАКТИРОВАНИЯ: поле артикула только для чтения
+
                 txtArticul.ReadOnly = true;
                 LoadGoodsData();
             }
@@ -91,7 +89,6 @@ namespace Exam
                 string imagePath = Path.Combine(Application.StartupPath, "images", _oldPhotoName);
                 if (File.Exists(imagePath))
                 {
-                    // ВАЖНО: загружаем через FileStream, чтобы не блокировать файл
                     using (FileStream fs = new FileStream(imagePath, FileMode.Open, FileAccess.Read))
                     {
                         picProduct.Image = Image.FromStream(fs);
@@ -111,7 +108,6 @@ namespace Exam
                 ofd.Filter = "Image Files|*.jpg;*.jpeg;*.png";
                 if (ofd.ShowDialog() == DialogResult.OK)
                 {
-                    // Ограничение размера фото: 300x200 пикселей
                     Image originalImage = Image.FromFile(ofd.FileName);
                     picProduct.Image = new Bitmap(originalImage, new Size(300, 200));
                     originalImage.Dispose();
@@ -141,11 +137,10 @@ namespace Exam
 
             string newPhotoName = _oldPhotoName;
 
-            // === ОБРАБОТКА ИЗОБРАЖЕНИЯ С ЗАЩИТОЙ ОТ NULL ===
+            // Обработка изображения
             if (_isImageChanged && picProduct.Image != null)
             {
-                // Освобождаем старое изображение, если оно есть
-                if (!string.IsNullOrEmpty(_oldPhotoName) && _oldPhotoName != "picture.png")
+                 if (!string.IsNullOrEmpty(_oldPhotoName) && _oldPhotoName != "picture.png")
                 {
                     string oldPath = Path.Combine(Application.StartupPath, "images", _oldPhotoName);
                     if (File.Exists(oldPath))
@@ -173,7 +168,6 @@ namespace Exam
             }
             else if (string.IsNullOrEmpty(_oldPhotoName))
             {
-                // Если изображение не загружалось вообще — используем заглушку
                 newPhotoName = "picture.png";
                 string savePath = Path.Combine(Application.StartupPath, "images", newPhotoName);
                 if (!File.Exists(savePath))
@@ -182,7 +176,7 @@ namespace Exam
                 }
             }
 
-            // === ДОБАВЛЕНИЕ ИЛИ РЕДАКТИРОВАНИЕ ===
+            // Добавление и редактирование
             if (string.IsNullOrEmpty(_currentArticul))
             {
                 if (table.Select($"Articul = '{txtArticul.Text}'").Length > 0)
