@@ -5,9 +5,9 @@ using System.Windows.Forms;
 
 namespace Exam
 {
-    public partial class orders_view : Form
+    public partial class OrdersView : Form
     {
-        public orders_view()
+        public OrdersView()
         {
             InitializeComponent();
         }
@@ -34,7 +34,7 @@ namespace Exam
 
             foreach (DataRow row in table.Rows)
             {
-                order_card card = new order_card(row);
+                OrderCard card = new OrderCard(row);
                 ordersPanel.Controls.Add(card);
             }
         }
@@ -42,14 +42,14 @@ namespace Exam
 
         public void EditOrder(int number)
         {
-            if (Application.OpenForms.OfType<orders_edit>().Any())
+            if (Application.OpenForms.OfType<OrdersEdit>().Any())
             {
                 MessageBox.Show("Окно редактирования заказа уже открыто!", "Предупреждение",
                     MessageBoxButtons.OK, MessageBoxIcon.Warning);
                 return;
             }
 
-            orders_edit editForm = new orders_edit(number);
+            OrdersEdit editForm = new OrdersEdit(number);
             editForm.ShowDialog();
             LoadOrders();
         }
@@ -84,14 +84,14 @@ namespace Exam
 
         private void btnAddOrder_Click(object sender, EventArgs e)
         {
-            if (Application.OpenForms.OfType<orders_edit>().Any())
+            if (Application.OpenForms.OfType<OrdersEdit>().Any())
             {
                 MessageBox.Show("Окно редактирования заказа уже открыто!", "Предупреждение",
                     MessageBoxButtons.OK, MessageBoxIcon.Warning);
                 return;
             }
 
-            orders_edit editForm = new orders_edit();
+            OrdersEdit editForm = new OrdersEdit();
             editForm.ShowDialog();
             LoadOrders();
         }

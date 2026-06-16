@@ -1,6 +1,6 @@
 ﻿namespace Exam
 {
-    partial class order_card
+    partial class OrderCard
     {
         /// <summary> 
         /// Обязательная переменная конструктора.

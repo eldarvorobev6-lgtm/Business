@@ -10,11 +10,11 @@ using System.Windows.Forms;
 
 namespace Exam
 {
-    public partial class order_card : UserControl
+    public partial class OrderCard : UserControl
     {
         public DataRow OrderData { get; set; }
 
-        public order_card(DataRow DR)
+        public OrderCard(DataRow DR)
         {
             InitializeComponent();
             OrderData = DR;
@@ -24,7 +24,7 @@ namespace Exam
 
         private void btnDeleteOrder_Click(object sender, EventArgs e)
         {
-            if (this.ParentForm is orders_view mainForm)
+            if (this.ParentForm is OrdersView mainForm)
             {
                 int number = Convert.ToInt32(OrderData["Number"]);
                 mainForm.DeleteOrder(number);
@@ -33,7 +33,7 @@ namespace Exam
 
         private void lblArticul_Click(object sender, EventArgs e)
         {
-            if (CurrentUser.RoleID == 1 && this.ParentForm is orders_view mainForm)
+            if (CurrentUser.RoleID == 1 && this.ParentForm is OrdersView mainForm)
             {
                 int number = Convert.ToInt32(OrderData["Number"]);
                 mainForm.EditOrder(number);

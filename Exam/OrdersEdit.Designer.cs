@@ -1,6 +1,6 @@
 ﻿namespace Exam
 {
-    partial class orders_edit
+    partial class OrdersEdit
     {
         /// <summary>
         /// Required designer variable.

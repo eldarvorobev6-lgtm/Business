@@ -11,10 +11,10 @@ using System.Windows.Forms;
 
 namespace Exam
 {
-    public partial class card : UserControl
+    public partial class Card : UserControl
     {
         public DataRow CardDDD { get; set; }
-        public card(DataRow DR)
+        public Card(DataRow DR)
         {
             InitializeComponent();
             CardDDD = DR;
@@ -146,7 +146,7 @@ namespace Exam
 
         private void btnDeleteCard_Click(object sender, EventArgs e)
         {
-            if (this.ParentForm is goods_view mainForm)
+            if (this.ParentForm is GoodsView mainForm)
             {
                 mainForm.DeleteGoods(CardDDD["Articul"].ToString());
             }
@@ -154,9 +154,9 @@ namespace Exam
 
         private void card_Click(object sender, EventArgs e)
         {
-            if (CurrentUser.RoleID == 1 && this.ParentForm is goods_view mainForm)
+            if (CurrentUser.RoleID == 1 && this.ParentForm is GoodsView mainForm)
             {
-                goods_edit editForm = new goods_edit(CardDDD["Articul"].ToString());
+                GoodsEdit editForm = new GoodsEdit(CardDDD["Articul"].ToString());
                 editForm.ShowDialog();
                 mainForm.LoadGoods();
             }

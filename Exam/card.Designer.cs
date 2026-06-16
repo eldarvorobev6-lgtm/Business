@@ -1,6 +1,6 @@
 ﻿namespace Exam
 {
-    partial class card
+    partial class Card
     {
         /// <summary> 
         /// Обязательная переменная конструктора.
@@ -28,7 +28,7 @@
         /// </summary>
         private void InitializeComponent()
         {
-            System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(card));
+            System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(Card));
             this.Main_Picture = new System.Windows.Forms.PictureBox();
             this.category_label = new System.Windows.Forms.Label();
             this.name_label = new System.Windows.Forms.Label();

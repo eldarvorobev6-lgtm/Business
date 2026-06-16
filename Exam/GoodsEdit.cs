@@ -7,15 +7,15 @@ using System.Windows.Forms;
 
 namespace Exam
 {
-    public partial class goods_edit : Form
+    public partial class GoodsEdit : Form
     {
         private string _currentArticul;
         private string _oldPhotoName;
         private bool _isImageChanged = false;
 
-        public goods_edit(string articul = null)
+        public GoodsEdit(string articul = null)
         {
-            if (Application.OpenForms.OfType<goods_edit>().Count() > 1)
+            if (Application.OpenForms.OfType<GoodsEdit>().Count() > 1)
             {
                 MessageBox.Show("Окно редактирования уже открыто!\nЗакройте его перед открытием нового.",
                     "Предупреждение", MessageBoxButtons.OK, MessageBoxIcon.Warning);

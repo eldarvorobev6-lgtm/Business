@@ -1,6 +1,6 @@
 ﻿namespace Exam
 {
-    partial class login
+    partial class Login
     {
         /// <summary>
         /// Обязательная переменная конструктора.

@@ -5,13 +5,13 @@ using System.Windows.Forms;
 
 namespace Exam
 {
-    public partial class orders_edit : Form
+    public partial class OrdersEdit : Form
     {
         private int? _currentNumber;
 
-        public orders_edit(int? number = null)
+        public OrdersEdit(int? number = null)
         {
-            if (Application.OpenForms.OfType<orders_edit>().Count() > 1)
+            if (Application.OpenForms.OfType<OrdersEdit>().Count() > 1)
             {
                 MessageBox.Show("Окно редактирования заказа уже открыто!\nЗакройте его перед открытием нового.",
                     "Предупреждение", MessageBoxButtons.OK, MessageBoxIcon.Warning);

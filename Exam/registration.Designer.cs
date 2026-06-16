@@ -1,6 +1,6 @@
 ﻿namespace Exam
 {
-    partial class registration
+    partial class Registration
     {
         /// <summary>
         /// Required designer variable.

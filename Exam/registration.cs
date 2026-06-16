@@ -4,9 +4,9 @@ using System.Windows.Forms;
 
 namespace Exam
 {
-    public partial class registration : Form
+    public partial class Registration : Form
     {
-        public registration()
+        public Registration()
         {
             InitializeComponent();
         }

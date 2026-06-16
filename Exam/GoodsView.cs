@@ -6,12 +6,12 @@ using System.Windows.Forms;
 
 namespace Exam
 {
-    public partial class goods_view : Form
+    public partial class GoodsView : Form
     {
         private int _currentSupplierId = 0;
         private bool _isFilterLoading = false;
 
-        public goods_view()
+        public GoodsView()
         {
             InitializeComponent();
         }
@@ -129,7 +129,7 @@ namespace Exam
 
             foreach (DataRowView item in dv)
             {
-                Main_Panel.Controls.Add(new card(item.Row));
+                Main_Panel.Controls.Add(new Card(item.Row));
             }
         }
 
@@ -229,13 +229,13 @@ namespace Exam
 
         private void btnOrders_Click(object sender, EventArgs e)
         {
-            orders_view ov = new orders_view();
+            OrdersView ov = new OrdersView();
             ov.ShowDialog();
         }
 
         private void btnAdd_Click(object sender, EventArgs e)
         {
-            goods_edit addForm = new goods_edit();
+            GoodsEdit addForm = new GoodsEdit();
             addForm.ShowDialog();
             LoadGoods();
         }

@@ -4,16 +4,16 @@ using System.Windows.Forms;
 
 namespace Exam
 {
-    public partial class login : Form
+    public partial class Login : Form
     {
-        public login()
+        public Login()
         {
             InitializeComponent();
         }
 
         private void Registr_label_Click(object sender, EventArgs e)
         {
-            registration reg = new registration();
+            Registration reg = new Registration();
             reg.ShowDialog(); // Модальное окно, чтобы не открывать 100 форм регистрации
         }
 
@@ -58,7 +58,7 @@ namespace Exam
                 // !!! КЛЮЧЕВОЕ ИЗМЕНЕНИЕ: используем ShowDialog() !!!
                 this.Hide(); // Скрываем форму входа
 
-                goods_view gv = new goods_view();
+                GoodsView gv = new GoodsView();
                 gv.ShowDialog(); // Код ниже НЕ выполнится, пока goods_view не закроется
 
                 this.Show(); // Когда goods_view закрылась — снова показываем форму входа
@@ -84,7 +84,7 @@ namespace Exam
             CurrentUser.FIO = "Гость";
 
             this.Hide();
-            goods_view gv = new goods_view();
+            GoodsView gv = new GoodsView();
             gv.ShowDialog();
             this.Show();
         }

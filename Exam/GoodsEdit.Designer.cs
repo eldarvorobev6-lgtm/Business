@@ -1,6 +1,6 @@
 ﻿namespace Exam
 {
-    partial class goods_edit
+    partial class GoodsEdit
     {
         /// <summary>
         /// Required designer variable.

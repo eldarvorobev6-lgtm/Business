@@ -1,6 +1,6 @@
 ﻿namespace Exam
 {
-    partial class orders_view
+    partial class OrdersView
     {
         /// <summary>
         /// Required designer variable.
