@@ -138,9 +138,11 @@
             // 
             // picProduct
             // 
+            this.picProduct.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle;
             this.picProduct.Location = new System.Drawing.Point(530, 191);
             this.picProduct.Name = "picProduct";
             this.picProduct.Size = new System.Drawing.Size(189, 168);
+            this.picProduct.SizeMode = System.Windows.Forms.PictureBoxSizeMode.Zoom;
             this.picProduct.TabIndex = 10;
             this.picProduct.TabStop = false;
             // 

@@ -183,7 +183,7 @@
             this.Controls.Add(this.Main_Picture);
             this.Margin = new System.Windows.Forms.Padding(3, 2, 3, 2);
             this.Name = "card";
-            this.Size = new System.Drawing.Size(1107, 335);
+            this.Size = new System.Drawing.Size(1172, 335);
             this.Load += new System.EventHandler(this.card_Load);
             this.Click += new System.EventHandler(this.Main_Picture_Click);
             ((System.ComponentModel.ISupportInitialize)(this.Main_Picture)).EndInit();

@@ -31,15 +31,11 @@ namespace Exam
             if (!_currentNumber.HasValue)
             {
                 // РЕЖИМ ДОБАВЛЕНИЯ
-                txtNumber.ReadOnly = true;
-                var ta = new MainDataSetTableAdapters.ordersTableAdapter();
-                var table = ta.GetData();
-                int maxNumber = table.Rows.Count > 0
-                    ? table.AsEnumerable().Max(r => Convert.ToInt32(r["Number"]))
-                    : 0;
-                txtNumber.Text = (maxNumber + 1).ToString();
+                // Скрываем номер заказа и его label
+                txtNumber.Visible = false;
+                if (lblNumber != null) lblNumber.Visible = false;
 
-                // Сбрасываем ComboBox'ы на первый элемент
+                // Сбрасываем ComboBox'ы
                 cmbArticul.SelectedIndex = -1;
                 cmbStatus.SelectedIndex = -1;
                 cmbPVZ.SelectedIndex = -1;
@@ -53,6 +49,9 @@ namespace Exam
             else
             {
                 // РЕЖИМ РЕДАКТИРОВАНИЯ
+                // Показываем номер заказа, он только для чтения
+                txtNumber.Visible = true;
+                if (lblNumber != null) lblNumber.Visible = true;
                 txtNumber.ReadOnly = true;
                 LoadOrderData();
             }
@@ -155,8 +154,13 @@ namespace Exam
 
             if (!_currentNumber.HasValue)
             {
+                // При добавлении — номер вычисляется автоматически как max + 1
+                int maxNumber = table.Rows.Count > 0
+                    ? table.AsEnumerable().Max(r => Convert.ToInt32(r["Number"]))
+                    : 0;
+
                 DataRow newRow = table.NewRow();
-                newRow["Number"] = Convert.ToInt32(txtNumber.Text);
+                newRow["Number"] = maxNumber + 1;
                 newRow["Articul"] = articul;
                 newRow["Count"] = (int)numCount.Value;
                 newRow["Date_order"] = dtpDateOrder.Value.ToString("M/d/yy");

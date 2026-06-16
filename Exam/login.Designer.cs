@@ -28,7 +28,6 @@
         /// </summary>
         private void InitializeComponent()
         {
-            System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(login));
             this.Login_Textbox = new System.Windows.Forms.TextBox();
             this.Password_Textbox = new System.Windows.Forms.TextBox();
             this.Auth_button = new System.Windows.Forms.Button();
@@ -51,7 +50,6 @@
             // 
             // Password_Textbox
             // 
-            this.Password_Textbox.BackColor = System.Drawing.Color.Wheat;
             this.Password_Textbox.Font = new System.Drawing.Font("Arial Narrow", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(204)));
             this.Password_Textbox.Location = new System.Drawing.Point(228, 154);
             this.Password_Textbox.Margin = new System.Windows.Forms.Padding(3, 2, 3, 2);
@@ -131,7 +129,6 @@
             this.Controls.Add(this.Auth_button);
             this.Controls.Add(this.Password_Textbox);
             this.Controls.Add(this.Login_Textbox);
-            this.Icon = ((System.Drawing.Icon)(resources.GetObject("$this.Icon")));
             this.Margin = new System.Windows.Forms.Padding(3, 2, 3, 2);
             this.Name = "login";
             this.Text = "Авторизация";
