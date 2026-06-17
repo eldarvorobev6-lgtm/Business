@@ -70,6 +70,7 @@
             this.txtPrice.Name = "txtPrice";
             this.txtPrice.Size = new System.Drawing.Size(245, 22);
             this.txtPrice.TabIndex = 1;
+            this.txtPrice.KeyPress += new System.Windows.Forms.KeyPressEventHandler(this.txtPrice_KeyPress);
             // 
             // txtMeasurement
             // 
@@ -266,7 +267,7 @@
             this.label10.TabIndex = 23;
             this.label10.Text = "Скидка";
             // 
-            // goods_edit
+            // GoodsEdit
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(8F, 16F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
@@ -295,7 +296,7 @@
             this.Controls.Add(this.txtMeasurement);
             this.Controls.Add(this.txtPrice);
             this.Controls.Add(this.txtArticul);
-            this.Name = "goods_edit";
+            this.Name = "GoodsEdit";
             this.Text = "goods_edit";
             this.Load += new System.EventHandler(this.goods_edit_Load);
             ((System.ComponentModel.ISupportInitialize)(this.numCount)).EndInit();

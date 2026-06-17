@@ -224,5 +224,22 @@ namespace Exam
         {
             this.Close();
         }
+
+        private void txtPrice_KeyPress(object sender, KeyPressEventArgs e)
+        {
+            if (!char.IsControl(e.KeyChar) && !char.IsDigit(e.KeyChar) &&
+                e.KeyChar != '.' && e.KeyChar != ',')
+            {
+                e.Handled = true;
+                return;
+            }
+
+            if ((e.KeyChar == '.' || e.KeyChar == ',') &&
+     (sender as TextBox).Text.IndexOf('.') > -1 ||
+     (sender as TextBox).Text.IndexOf(',') > -1)
+            {
+                e.Handled = true;
+            }
+        }
     }
 }
